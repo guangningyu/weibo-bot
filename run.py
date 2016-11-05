@@ -13,6 +13,9 @@ class WeiboBot():
         self.password = config.password
         self.keywords = config.keywords.split(',')
         self.client = self.create_api_client()
+        self.app = {
+            'repost_news': '小易读新闻'
+        }
 
     def create_api_client(self):
         return Client(
@@ -62,7 +65,7 @@ class WeiboBot():
         for weibo in weibos['statuses']:
             for keyword in self.keywords:
                 if keyword.decode('utf-8') in weibo['text']:
-                    self.repost_weibo(weibo['id'], '#%s#' % keyword)
+                    self.repost_weibo(weibo['id'], '#%s##%s#' % (self.app['repost_news'], keyword))
                     return
 
 if __name__ == '__main__':
