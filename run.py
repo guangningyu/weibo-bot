@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import random
 from weibo import Client
 import cPickle as pickle
 import config
@@ -18,7 +19,8 @@ class WeiboBot():
         self.state_file = '/home/pi/Documents/MyRepos/weibo-bot/state.pkl'
         self.init_state()
         self.app = {
-            'repost_news': '小易读新闻'
+            'repost_news': '小易读新闻',
+            'auto_reply': '小易陪聊'
         }
 
     def create_api_client(self):
@@ -104,7 +106,20 @@ class WeiboBot():
                     return
 
     def get_reply(self, comment):
-        return '恩，然后呢？' # 现在只会这一句
+        answer_pool = [
+            '恩，然后呢？',
+            '哦，好吧...',
+            '人生得意须尽欢啊呦喂！',
+            '剽悍的人生不需要解释',
+            '大家都是出来混的，都不容易！',
+            '人生总有几次踩到大便的时候',
+            '令人愉悦的忧伤...',
+            'Don\'t panic!',
+            '我走来走去，为中国的命运苦苦思索...'
+        ]
+        reply = random.choice(answer_pool)
+        reply += ' #%s#' % self.app['auto_reply']
+        return reply
 
     def reply_comments_with_mentions(self):
         '''
