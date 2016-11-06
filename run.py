@@ -2,10 +2,14 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sys
 import random
 from weibo import Client
 import cPickle as pickle
 import config
+
+reload(sys)
+sys.setdefaultencoding( "utf-8" )
 
 class WeiboBot():
     def __init__(self, config):
@@ -72,13 +76,13 @@ class WeiboBot():
         '''
         回复一条评论
         '''
-        self.client.post('comments/reply', cid=cid, id=id, comment=reply, comment_ori=1)
+        self.client.post('comments/reply', cid=cid, id=id, comment=reply, comment_ori=0)
 
     def repost_weibo(self, id, status):
         '''
         转发一条微博
         '''
-        print '>>> reposted weibo...'
+        print '>>> 转发微博...'
         self.client.post('statuses/repost', id=id, status=status+'[哈欠]')
 
     def get_followers(self, screen_name):
@@ -133,13 +137,13 @@ class WeiboBot():
             reply = self.get_reply(comment['text'])
             # 如果没有回复过，则进行回复并更新已回复列表
             if cid not in self.state['replied_comments']:
+                print '原评论：%s' % comment['text']
                 bot.reply_comment(cid, id, reply)
                 self.state['replied_comments'].append(cid)
                 self.dump_state()
 
 if __name__ == '__main__':
     bot = WeiboBot(config)
-    print bot.state
 
     # 转发最新关注的人的最新的一条微博
     #res = bot.get_friends_timeline_weibo()
