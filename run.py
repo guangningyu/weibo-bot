@@ -20,12 +20,15 @@ class WeiboBot():
         self.password = config.password
         self.keywords = config.keywords.split(',')
         self.client = self.create_api_client()
-        self.state_file = '/home/pi/Documents/MyRepos/weibo-bot/state.pkl'
+        self.state_file = self.get_state_file()
         self.init_state()
         self.app = {
             'repost_news': '小易读新闻',
             'auto_reply': '小易陪聊'
         }
+
+    def get_state_file(self):
+        return os.path.join(os.getcwd(), 'state.pkl')
 
     def create_api_client(self):
         return Client(
