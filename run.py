@@ -140,10 +140,13 @@ class WeiboBot():
             reply = self.get_reply(comment['text'])
             # 如果没有回复过，则进行回复并更新已回复列表
             if cid not in self.state['replied_comments']:
-                print '原评论：%s' % comment['text']
-                bot.reply_comment(cid, id, reply)
-                self.state['replied_comments'].append(cid)
-                self.dump_state()
+                try:
+                    print '原评论：%s' % comment['text']
+                    bot.reply_comment(cid, id, reply)
+                    self.state['replied_comments'].append(cid)
+                    self.dump_state()
+                except Exception as e:
+                    print e
 
 if __name__ == '__main__':
     bot = WeiboBot(config)
